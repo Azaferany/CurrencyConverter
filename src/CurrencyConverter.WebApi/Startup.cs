@@ -24,6 +24,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddSingleton<ICurrencyConverter, Services.CurrencyConverter>();
+        
         services.AddControllers();
 
         services.AddApiVersioning(o =>

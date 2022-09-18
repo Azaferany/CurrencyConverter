@@ -6,11 +6,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CurrencyConverter.WebApi.Models;
+using CurrencyConverter.WebApi.Services.Contracts;
 using Spare;
 
 namespace CurrencyConverter.WebApi.Services;
 
-public class CurrencyConverter
+public class CurrencyConverter : ICurrencyConverter
 {
     private readonly SemaphoreSlim _semaphore = new(1, 1);
 
