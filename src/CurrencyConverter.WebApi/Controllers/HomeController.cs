@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ public class HomeController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPut(Name = "UpdateConfiguration")]
-    public async Task<ActionResult> UpdateConfiguration([FromBody]IEnumerable<Tuple<string, string, double>> conversionRates)
+    public async Task<ActionResult> UpdateConfigurationAsync([FromBody]IEnumerable<Tuple<string, string, double>> conversionRates)
     {
         try
         {
@@ -60,6 +61,23 @@ public class HomeController : ControllerBase
            return Ok();
         }
         catch (InvalidDataException e)
+        {
+            return ValidationProblem(e.Message);
+        }
+    }
+
+    /// <summary>
+    /// Convert
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut(Name = "Convert")]
+    public async Task<ActionResult<double>> ConvertAsync(string fromCurrency, string toCurrency, double amount)
+    {
+        try
+        {
+            return Ok(await _currencyConverter.ConvertAsync(fromCurrency,toCurrency,amount));
+        }
+        catch (DataException e)
         {
             return ValidationProblem(e.Message);
         }

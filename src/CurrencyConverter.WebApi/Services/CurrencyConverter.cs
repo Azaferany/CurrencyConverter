@@ -85,7 +85,7 @@ public class CurrencyConverter : ICurrencyConverter
         }
     }
 
-    public async Task<double> Convert(string fromCurrency, string toCurrency, double amount)
+    public async Task<double> ConvertAsync(string fromCurrency, string toCurrency, double amount)
     {
         await _semaphore.WaitAsync();
         _semaphore.Release();

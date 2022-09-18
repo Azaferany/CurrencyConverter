@@ -12,6 +12,6 @@ public interface ICurrencyConverter
 {
     Dictionary<CurrencyConversion, double> GetDefinedCurrencyConversions();
     Task UpdateConfigurationAsync(IEnumerable<Tuple<string, string, double>> conversionRates);
-    Task<double> Convert(string fromCurrency, string toCurrency, double amount);
+    Task<double> ConvertAsync(string fromCurrency, string toCurrency, double amount);
     void ClearConfiguration();
 }
