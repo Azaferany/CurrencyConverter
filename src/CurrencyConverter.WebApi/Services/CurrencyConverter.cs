@@ -53,9 +53,9 @@ public class CurrencyConverter : ICurrencyConverter
 
                 currencyConversions[new CurrencyConversion(from.ToLower(), to.ToLower())] = rate;
             }
-            var conversionTable = new double[currencies.Count, currencies.Count];
-
             currencies = currencies.Distinct().ToList();
+
+            var conversionTable = new double[currencies.Count, currencies.Count];
 
             foreach (var currency in currencies)
             {
