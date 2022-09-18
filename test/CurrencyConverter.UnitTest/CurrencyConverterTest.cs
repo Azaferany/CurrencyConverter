@@ -38,7 +38,7 @@ public class CurrencyConverterTest
             {
                 new("0.1", "0.2", 2), new("0.2", "0.3", 3), new("0.3", "0.1", 500),
             }));
-        await Assert.ThrowsAsync(typeof(InvalidDataException), x);
+        await Assert.ThrowsAsync<InvalidDataException>(x);
 
     }
 }

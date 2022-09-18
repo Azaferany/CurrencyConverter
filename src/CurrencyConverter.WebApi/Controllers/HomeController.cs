@@ -53,13 +53,13 @@ public class HomeController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPut(Name = "UpdateConfiguration")]
-    public async Task<ActionResult> UpdateConfigurationAsync([FromBody]IEnumerable<CurrencyConversionRate> conversionRates)
+    public async Task<ActionResult> UpdateConfigurationAsync([FromBody] IEnumerable<CurrencyConversionRate> conversionRates)
     {
         try
         {
 
             await _currencyConverter.UpdateConfigurationAsync(conversionRates.Select(x => Tuple.Create(x.From, x.To, x.Rate)));
-           return Ok();
+            return Ok();
         }
         catch (InvalidDataException e)
         {
@@ -76,7 +76,7 @@ public class HomeController : ControllerBase
     {
         try
         {
-            return Ok(await _currencyConverter.ConvertAsync(fromCurrency,toCurrency,amount));
+            return Ok(await _currencyConverter.ConvertAsync(fromCurrency, toCurrency, amount));
         }
         catch (DataException e)
         {

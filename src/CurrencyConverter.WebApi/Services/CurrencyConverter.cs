@@ -15,7 +15,7 @@ public class CurrencyConverter : ICurrencyConverter
 {
     private readonly SemaphoreSlim _semaphore = new(1, 1);
 
-    private double[,] _conversionTable = {};
+    private double[,] _conversionTable = { };
     private List<string> _currencies = new();
     private Dictionary<CurrencyConversion, double> _currencyConversions = new();
 
@@ -112,45 +112,45 @@ public class CurrencyConverter : ICurrencyConverter
             newItemAdded = false;
             var list = new List<(int i, int j)>();
             for (int i = 0; i < conversionTable.GetLength(0); i++)
-            for (int j = 0; j < conversionTable.GetLength(1); j++)
-                if (conversionTable[i, j] != 0)
-                    list.Add((i, j));
+                for (int j = 0; j < conversionTable.GetLength(1); j++)
+                    if (conversionTable[i, j] != 0)
+                        list.Add((i, j));
 
             foreach (var currency in currencies)
             {
                 var rows = list.Where(x => x.i == currencies.IndexOf(currency)).ToList();
                 if (rows.Count > 1)
                     foreach (var x in rows)
-                    foreach (var y in rows.Where(y => y != x))
-                        if (conversionTable[x.j, y.j] == 0)
-                        {
-                            conversionTable[x.j, y.j] = conversionTable[y.i, y.j] / conversionTable[x.i, x.j];
-                            newItemAdded = newItemAdded || true;
-                        }
-                        else
-                        {
-                            if (Math.Abs(conversionTable[x.j, y.j] - conversionTable[y.i, y.j] / conversionTable[x.i, x.j]) > 0.0000000000000099)
+                        foreach (var y in rows.Where(y => y != x))
+                            if (conversionTable[x.j, y.j] == 0)
                             {
-                                throw new InvalidDataException("Invalid Rates");
+                                conversionTable[x.j, y.j] = conversionTable[y.i, y.j] / conversionTable[x.i, x.j];
+                                newItemAdded = newItemAdded || true;
                             }
-                        }
+                            else
+                            {
+                                if (Math.Abs(conversionTable[x.j, y.j] - conversionTable[y.i, y.j] / conversionTable[x.i, x.j]) > 0.0000000000000099)
+                                {
+                                    throw new InvalidDataException("Invalid Rates");
+                                }
+                            }
 
                 var columns = list.Where(x => x.j == currencies.IndexOf(currency)).ToList();
                 if (columns.Count > 1)
                     foreach (var x in columns)
-                    foreach (var y in columns.Where(y => y != x))
-                        if (conversionTable[x.i, y.i] == 0)
-                        {
-                            conversionTable[x.i, y.i] = conversionTable[x.i, x.j] / conversionTable[y.i, y.j];
-                            newItemAdded = newItemAdded || true;
-                        }
-                        else
-                        {
-                            if (Math.Abs(conversionTable[x.i, y.i] - (conversionTable[x.i, x.j] / conversionTable[y.i, y.j])) > 0.0000000000000099)
+                        foreach (var y in columns.Where(y => y != x))
+                            if (conversionTable[x.i, y.i] == 0)
                             {
-                                throw new InvalidDataException("Invalid Rates");
+                                conversionTable[x.i, y.i] = conversionTable[x.i, x.j] / conversionTable[y.i, y.j];
+                                newItemAdded = newItemAdded || true;
                             }
-                        }
+                            else
+                            {
+                                if (Math.Abs(conversionTable[x.i, y.i] - (conversionTable[x.i, x.j] / conversionTable[y.i, y.j])) > 0.0000000000000099)
+                                {
+                                    throw new InvalidDataException("Invalid Rates");
+                                }
+                            }
             }
         } while (newItemAdded);
     }
