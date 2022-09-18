@@ -43,9 +43,10 @@ public class HomeController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet(Name = "GetDefinedCurrencyConversions")]
-    public ActionResult<Dictionary<CurrencyConversion, double>> GetDefinedCurrencyConversions()
+    public ActionResult<List<CurrencyConversionRate>> GetDefinedCurrencyConversions()
     {
-        return Ok(_currencyConverter.GetDefinedCurrencyConversions());
+        var res = _currencyConverter.GetDefinedCurrencyConversions();
+        return res.Select(x => new CurrencyConversionRate(x.Key.From, x.Key.To, x.Value)).ToList();
     }
 
     /// <summary>
@@ -57,7 +58,6 @@ public class HomeController : ControllerBase
     {
         try
         {
-
             await _currencyConverter.UpdateConfigurationAsync(conversionRates.Select(x => Tuple.Create(x.From, x.To, x.Rate)));
             return Ok();
         }
