@@ -1,14 +1,19 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
+using System.Threading.Tasks;
+using CurrencyConverter.WebApi.Models;
 using CurrencyConverter.WebApi.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CurrencyConverter.WebApi.Controllers;
 
 [ApiController]
-[Route("v{version:apiVersion}/[controller]/[action]")]
+[Route("v{version:apiVersion}/[action]")]
 [ApiVersion("1.0", Deprecated = true)]
 [ApiVersion("2.0")]
 [Produces("application/json")]
@@ -22,7 +27,7 @@ public class HomeController : ControllerBase
     public HomeController(ICurrencyConverter currencyConverter) => _currencyConverter = currencyConverter;
 
     /// <summary>
-    /// Get Weather Forecast
+    /// Clear Configuration
     /// </summary>
     /// <returns></returns>
     [HttpGet(Name = "ClearConfiguration")]
@@ -30,5 +35,15 @@ public class HomeController : ControllerBase
     {
         _currencyConverter.ClearConfiguration();
         return Ok();
+    }
+
+    /// <summary>
+    /// Get Defined Currency Conversions
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet(Name = "GetDefinedCurrencyConversions")]
+    public ActionResult<Dictionary<CurrencyConversion, double>> GetDefinedCurrencyConversions()
+    {
+        return Ok(_currencyConverter.GetDefinedCurrencyConversions());
     }
 }

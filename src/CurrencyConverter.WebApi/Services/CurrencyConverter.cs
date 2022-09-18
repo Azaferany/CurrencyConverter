@@ -28,7 +28,12 @@ public class CurrencyConverter : ICurrencyConverter
         _semaphore.Release();
     }
 
-    public async Task UpdateConfiguration(IEnumerable<Tuple<string, string, double>> conversionRates)
+    public Dictionary<CurrencyConversion, double> GetDefinedCurrencyConversions()
+    {
+        return _currencyConversions;
+    }
+
+    public async Task UpdateConfigurationAsync(IEnumerable<Tuple<string, string, double>> conversionRates)
     {
         try
         {

@@ -4,12 +4,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CurrencyConverter.WebApi.Models;
 
 namespace CurrencyConverter.WebApi.Services.Contracts;
 
 public interface ICurrencyConverter
 {
-    Task UpdateConfiguration(IEnumerable<Tuple<string, string, double>> conversionRates);
+    Dictionary<CurrencyConversion, double> GetDefinedCurrencyConversions();
+    Task UpdateConfigurationAsync(IEnumerable<Tuple<string, string, double>> conversionRates);
     Task<double> Convert(string fromCurrency, string toCurrency, double amount);
     void ClearConfiguration();
 }
