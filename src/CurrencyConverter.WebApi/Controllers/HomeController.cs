@@ -46,4 +46,22 @@ public class HomeController : ControllerBase
     {
         return Ok(_currencyConverter.GetDefinedCurrencyConversions());
     }
+
+    /// <summary>
+    /// Update Configuration
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut(Name = "UpdateConfiguration")]
+    public async Task<ActionResult> UpdateConfiguration([FromBody]IEnumerable<Tuple<string, string, double>> conversionRates)
+    {
+        try
+        {
+           await _currencyConverter.UpdateConfigurationAsync(conversionRates);
+           return Ok();
+        }
+        catch (InvalidDataException e)
+        {
+            return ValidationProblem(e.Message);
+        }
+    }
 }
