@@ -71,12 +71,12 @@ public class HomeController : ControllerBase
     /// Convert
     /// </summary>
     /// <returns></returns>
-    [HttpPut(Name = "Convert")]
+    [HttpGet(Name = "Convert")]
     public async Task<ActionResult<double>> ConvertAsync(string fromCurrency, string toCurrency, double amount)
     {
         try
         {
-            return Ok(await _currencyConverter.ConvertAsync(fromCurrency, toCurrency, amount));
+            return await _currencyConverter.ConvertAsync(fromCurrency, toCurrency, amount);
         }
         catch (DataException e)
         {
