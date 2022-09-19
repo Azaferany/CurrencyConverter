@@ -1,0 +1,19 @@
+kind: ExternalService
+name: currencyconverter
+spec:
+  allow_http: true
+  disable_default_domains: false
+  env:
+    - hidden: false
+      name: PORT
+      value: '5000'
+    - hidden: false
+      name: ASPNETCORE_ENVIRONMENT
+      value: 'Development'
+  image: ${IMAGE_URL}:${IMAGE_VERSION}
+  image_pull_policy: IfNotPresent
+  path: /
+  port: 5000
+  replicas: 1
+  resources:
+    memory: 200Mi

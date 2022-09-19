@@ -1,0 +1,19 @@
+name: Fandogh-Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: deploy action step
+        uses: Glyphack/fandogh-service-deploy-action@v1.2.0
+        with:
+          username: ${{ secrets.FANDOGH_USERNAME }}
+          password: ${{ secrets.FANDOGH_PASSWORD }}
+          image_name: currencyconverter
+          path_to_service_file: .github/currencyconverter-manifest.yml
